@@ -38,3 +38,15 @@ export const getCurrentWeek = function() {
     end
   }
 }
+export const getCurrentWeekFormat = function() {
+  var now = new Date()
+  const nowWeek = now.getDay()
+  var num = +new Date() - 1000 * 60 * 60 * 24 * (nowWeek - 1)
+  const startTime = new Date(num)
+  const end = dayjs(now).format('YYYY-MM-DD HH:mm:ss')
+  const start = dayjs(startTime).format('YYYY-MM-DD 00:00:00')
+  return {
+    start,
+    end
+  }
+}
