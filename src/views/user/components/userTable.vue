@@ -11,6 +11,7 @@
             label="序号"
             width="80"
             type="index"
+            :index="indexAdd"
           />
           <el-table-column
             label="人员名称"
@@ -67,17 +68,36 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    page: {
+      type: Object,
+      required: true
+    },
+    detailLoading: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     async check(id) {
-      this.$emit('update:showDetails', true)
-      const { data } = await getUserApi(id)
-      const { data: weekRes } = await getUserWorkOrderApi({ userId: id, ...getCurrentWeekFormat() })
-      const { data: monthRes } = await getUserWorkOrderApi({ userId: id, ...getCurrentMonth() })
-      const { data: yearRes } = await getUserWorkOrderApi({ userId: id, start: dayjs().format('YYYY-01-01 HH:mm:ss'), end: dayjs().format('YYYY-MM-DD HH:mm:ss') })
-      this.$emit('userInfo', { data: data, res: [weekRes, monthRes, yearRes] })
-      console.log(weekRes)
+      try {
+        this.$emit('update:showDetails', true)
+        this.$emit('update:detailLoading', true)
+        const { data } = await getUserApi(id)
+        const { data: weekRes } = await getUserWorkOrderApi({ userId: id, ...getCurrentWeekFormat() })
+        const { data: monthRes } = await getUserWorkOrderApi({ userId: id, ...getCurrentMonth() })
+        const { data: yearRes } = await getUserWorkOrderApi({ userId: id, start: dayjs().format('YYYY-01-01 HH:mm:ss'), end: dayjs().format('YYYY-MM-DD HH:mm:ss') })
+        this.$emit('userInfo', { data: data, res: [weekRes, monthRes, yearRes] })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.$emit('update:detailLoading', false)
+      }
+    },
+    indexAdd(index) {
+      const page = this.page.pageIndex
+      const pageSize = this.page.pageSize
+      return index + 1 + (page - 1) * pageSize
     }
   }
 }

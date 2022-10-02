@@ -3,11 +3,11 @@
     <!-- 搜索头部 -->
     <SearchHead :option="SearchHead.option" @search="search" />
     <!-- 表格 -->
-    <UserTable :table-data="tableData" :loading="loading" :show-details.sync="dialogVisible" @userInfo="sendUserInfo" />
+    <UserTable :detail-loading.sync="detailLoading" :page="page" :table-data="tableData" :loading="loading" :show-details.sync="dialogVisible" @userInfo="sendUserInfo" />
     <!-- 分页 -->
     <Pagination :total-count="totalCount" :page-index="page.pageIndex" :total-page="totalPage" @prevPage="changePage" />
     <!-- 弹窗 -->
-    <Details :dialog-visible.sync="dialogVisible" :user-info="userInfo" :work-order="workOrder" @dialogVisibleClose="dialogVisibleClose" />
+    <Details :detail-loading="detailLoading" :dialog-visible.sync="dialogVisible" :user-info="userInfo" :work-order="workOrder" @dialogVisibleClose="dialogVisibleClose" />
   </div>
 </template>
 
@@ -51,6 +51,7 @@ export default {
         }
       },
       loading: false,
+      detailLoading: false,
       dialogVisible: false,
       userInfo: {},
       workOrder: []
@@ -94,10 +95,10 @@ export default {
       this.userInfo = data.data
       this.workOrder = data.res
     },
-    dialogVisibleClose(){
-      this.dialogVisible=false
-      this.userInfo= {}
-      this.workOrder=[]
+    dialogVisibleClose() {
+      this.dialogVisible = false
+      this.userInfo = {}
+      this.workOrder = []
     }
   }
 }

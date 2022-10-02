@@ -5,14 +5,14 @@
     width="630px"
     @close="detailsClose"
   >
-    <el-row class="userInfo">
+    <el-row v-loading="detailLoading" class="userInfo">
       <el-col :span="9">人员名称: {{ userInfo.userName }}</el-col>
       <el-col :span="7">角色: {{ userInfo.roleName }}</el-col>
       <el-col :span="8">联系电话: {{ userInfo.mobile }}</el-col>
       <el-col :span="24" class="region-name">负责区域: {{ userInfo.regionName }}</el-col>
     </el-row>
     <!-- 表格头部 -->
-    <el-row class="user-work header">
+    <el-row v-loading="detailLoading" class="user-work header">
       <el-col :span="5" class="item " style="border: 1px solid transparent" />
       <el-col :span="5" class="item border">总工单数</el-col>
       <el-col :span="5" class="item">拒绝工单</el-col>
@@ -44,6 +44,10 @@ export default {
     workOrder: {
       type: Array,
       default: () => ([])
+    },
+    detailLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
