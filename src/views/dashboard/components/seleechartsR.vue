@@ -56,7 +56,7 @@ export default {
         grid: {
           left: '16%',
           bottom: '10%',
-          right: '5%'
+          right: '3%'
         },
         xAxis: {
           type: 'category',

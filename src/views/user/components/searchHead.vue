@@ -37,7 +37,7 @@ export default {
       const data = {}
       this.option.searchBox.show ? data[this.option.searchBox.dataField] = this.formInline.user : ''
       this.option.selectionBox.show ? data[this.option.selectionBox.dataField] = this.formInline.region : ''
-      this.$emit('search', data)
+      this.$emit('search', data, 'search')
     }
   }
 }

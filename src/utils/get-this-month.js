@@ -21,6 +21,7 @@ export const getCurrentMonthFormat = function() {
   first = dayjs(first).format('YYYY-MM-DD')
   var dateNow = new Date()
   dateNow = dayjs(dateNow).format('YYYY-MM-DD')
+  console.log(first, dateNow)
   return {
     start: first,
     end: dateNow
@@ -28,8 +29,8 @@ export const getCurrentMonthFormat = function() {
 }
 export const getCurrentWeek = function() {
   var now = new Date()
-  const nowWeek = now.getDay()
-  var num = +new Date() - 1000 * 60 * 60 * 24 * (nowWeek - 1)
+  const nowWeek = now.getDay() + 1
+  var num = +new Date() - 1000 * 60 * 60 * 24 * nowWeek
   const startTime = new Date(num)
   const end = dayjs(now).format('YYYY-MM-DD')
   const start = dayjs(startTime).format('YYYY-MM-DD')
@@ -40,8 +41,8 @@ export const getCurrentWeek = function() {
 }
 export const getCurrentWeekFormat = function() {
   var now = new Date()
-  const nowWeek = now.getDay()
-  var num = +new Date() - 1000 * 60 * 60 * 24 * (nowWeek - 1)
+  const nowWeek = now.getDay() + 1
+  var num = +new Date() - 1000 * 60 * 60 * 24 * nowWeek
   const startTime = new Date(num)
   const end = dayjs(now).format('YYYY-MM-DD HH:mm:ss')
   const start = dayjs(startTime).format('YYYY-MM-DD 00:00:00')
