@@ -7,21 +7,21 @@ export default {
   meta: { title: '设备管理', icon: 'shebeiguanli' },
   children: [
     {
-      path: '/index',
+      path: 'index',
       name: 'Index',
-      component: () => import('@/views/vm/index.vue'),
+      component: () => import('@/views/vm/Equipment'),
       meta: { title: '设备管理' }
     },
     {
-      path: '/status',
+      path: 'status',
       name: 'Status',
-      component: () => import('@/views/vm/status.vue'),
+      component: () => import('@/views/vm/Status'),
       meta: { title: '设备状态' }
     },
     {
-      path: '/partner',
-      name: 'Partner',
-      component: () => import('@/views/vm/type.vue'),
+      path: 'type',
+      name: 'type',
+      component: () => import('@/views/vm/Type'),
       meta: { title: '设备类型管理' }
     }
   ]
