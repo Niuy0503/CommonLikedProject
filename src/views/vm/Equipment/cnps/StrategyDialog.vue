@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" width="630px" :visible.sync="dialogVisible" :before-close="handleClose">
+  <el-dialog custom-class="dialog-container" :title="title" width="630px" :visible.sync="dialogVisible" :before-close="handleClose">
     <el-form v-if="isShow" ref="formRef" label-width="100px">
       <el-form-item label="选择策略：">
         <el-select v-model="policyId">
@@ -94,6 +94,43 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.dialog-container {
+  border-radius: 10px;
+  .el-dialog__header {
+    padding: 20px;
+    padding-bottom: 20px;
 
+    .el-dialog__title {
+      line-height: 22px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+  .el-dialog__body {
+    padding: 20px 20px 10px;
+    color: #666;
+    .el-form-item {
+      margin-bottom: 20px;
+      .el-form-item__label {
+        line-height: 36px;
+        font-weight: normal;
+      }
+    }
+  }
+  .el-dialog__footer {
+    padding-top: 0;
+    padding-bottom: 40px;
+    .el-button {
+        display: inline-block;
+        width: 80px!important;
+        height: 36px;
+        background-color: #fbf4f0!important;
+        border: none;
+        color: #655b56!important;
+        padding-left: 10px;
+      }
+  }
+}
 </style>
