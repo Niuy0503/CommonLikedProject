@@ -40,7 +40,7 @@
         >
           <template slot-scope="{row}">
             <el-button size="small" type="text" @click="editRole(row)">修改</el-button>
-            <el-button size="small" type="text">删除</el-button>
+            <el-button size="small" type="text" class="edit">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -130,5 +130,8 @@ export default {
     color: #5f84ff;
     font-size: 14px;
   }
+ }
+ .edit{
+  color: #ff5a5a !important;
  }
 </style>
