@@ -26,7 +26,7 @@
                   <div class="name">{{ (goods.sku && goods.sku.skuName) || "暂无商品" }}</div>
                 </div>
                 <div class="btns">
-                  <el-button type="text" class="add">添加</el-button>
+                  <el-button type="text" class="add" @click="addGoods">添加</el-button>
                   <el-button type="text" :class="['del',{forb:!goods.sku}]" :disabled="!goods.sku">删除</el-button>
                 </div>
               </div>
@@ -61,7 +61,38 @@
         <el-button class="accept" type="primary" @click="close">采纳建议</el-button>
       </div>
     </el-dialog>
-
+    <!-- 添加商品弹出层 -->
+    <el-dialog custom-class="addGoodsdialog-container" title="选择商品" width="858px" :visible="addGoodsVisible"
+      :before-close="closeGoods" append-to-body>
+      <div class="select-sku-dialog-wrapper">
+        <el-form class="search" label-width="85px">
+          <el-form-item label="商品名称：">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="24">
+                <el-input placeholder="请输入" class="sku-name">
+                </el-input>
+              </el-col>
+              <el-col :span="24">
+                <el-button type="primary" icon="el-icon-search">查询</el-button>
+              </el-col>
+            </el-row>
+          </el-form-item>
+        </el-form>
+        <el-row style="margin-left: -10px; margin-right: -10px;">
+          <el-col v-for="(item,index) in top10" :key="index" :span="4.8" style="padding-left: 10px; padding-right: 10px;">
+            <div class="item1">
+              <div class=" sku1 space1">
+                <img :src="item.image" alt="">
+                <div class="name">{{ item.skuName }}</div>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button class="confirm" type="primary" @click="close">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,6 +109,7 @@ export default {
   data() {
     return {
       smartRankVisible: false,
+      addGoodsVisible: false,
       currentPageRecord: {},
       details: {
         channel1: [],
@@ -124,6 +156,12 @@ export default {
     },
     close() {
       this.smartRankVisible = false
+    },
+    addGoods() {
+      this.addGoodsVisible = true
+    },
+    closeGoods() {
+      this.addGoodsVisible = false
     }
   }
 
@@ -336,6 +374,105 @@ export default {
         border: none;
       }
 
+    }
+  }
+}
+
+.addGoodsdialog-container {
+  border-radius: 10px;
+  .el-dialog__header {
+    .el-dialog__title {
+      line-height: 22px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+  .el-dialog__body {
+    padding: 20px 20px 30px;
+    color: #666;
+    .select-sku-dialog-wrapper {
+      position: relative;
+      width: 750px;
+      margin: 0 auto;
+      .search {
+        margin-bottom: 37px;
+        .el-form-item {
+          margin-bottom: 0;
+          .el-form-item__label {
+            line-height: 36px;
+            text-align: right;
+            vertical-align: middle;
+            float: left;
+            font-size: 14px;
+            color: #606266;
+            padding: 0 12px 0 0;
+            box-sizing: border-box;
+          }
+          .el-form-item__content {
+            width: 396px;
+            line-height: 36px;
+            position: relative;
+            font-size: 14px;
+            .el-row {
+              .el-col {
+                .sku-name {
+                  margin-right: 16px;
+                  width: 314px;
+                }
+                .el-input {
+                  position: relative;
+                  font-size: 14px;
+                  display: inline-block;
+                }
+              }
+            }
+          }
+        }
+      }
+      .el-row {
+        position: relative;
+        .item1 {
+          .space1 {
+            margin-bottom: 20px;
+          }
+          .sku1 {
+            width: 134px;
+            height: 134px;
+            padding-top: 16px;
+            background-color: #f6f7fb;
+            box-shadow: 0 2px 4px 0 rgb(0 0 0 / 6%);
+            border-radius: 4px;
+            text-align: center;
+            img {
+              display: inline-block;
+              width: 83px;
+              height: 84px;
+              margin-bottom: 5px;
+              object-fit: contain;
+              border-style: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .el-dialog__footer {
+    padding-top: 0;
+    padding-bottom: 40px;
+    .dialog-footer {
+      padding-top: 0;
+      text-align: center;
+      .el-button {
+        display: inline-block;
+      }
+      .confirm {
+        width: 80px!important;
+        height: 36px;
+        padding: 0;
+        background: linear-gradient(135deg,#ff9743,#ff5e20)!important;
+        border: none;
+      }
     }
   }
 }
