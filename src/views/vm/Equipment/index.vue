@@ -22,7 +22,7 @@
         <el-table-column label="设备状态" prop="vmStatus" />
         <el-table-column label="操作" width="200">
           <template slot-scope="{ row }">
-            <el-button size="small" type="text" @click="channel(row.innerCode)">货道</el-button>
+            <el-button size="small" type="text" @click="channel(row)">货道</el-button>
             <el-button size="small" type="text" @click="stragety(row.innerCode)">策略</el-button>
             <el-button size="small" type="text" @click="modifyDevice(row)">修改</el-button>
           </template>
@@ -129,9 +129,9 @@ export default {
       this.$refs.strategyRef.innerCode = innerCode
       this.$refs.strategyRef.stragetys()
     },
-    channel(innerCode) {
+    channel(row) {
       this.channelVisible = true
-      this.$refs.channelRef.innerCode = innerCode
+      this.$refs.channelRef.currentPageRecord = row
       this.$refs.channelRef.getChannelDetails()
     }
   }

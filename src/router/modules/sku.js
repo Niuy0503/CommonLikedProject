@@ -15,7 +15,6 @@ export default {
     },
     {
       path: 'sku',
-      name: 'Sku',
       component: () => import('@/views/sku/sku'),
       meta: { title: '商品管理' }
     }

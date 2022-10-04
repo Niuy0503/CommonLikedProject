@@ -199,3 +199,23 @@ export const channelDetailsAPI = (innerCode) => {
     url: `/vm-service/channel/channelList/${innerCode}`,
   })
 }
+/**
+ * 获取商圈列表
+ * @returns promise
+ */
+export const getBusinessListAPI = () => {
+  return request({
+    method: 'GET',
+    url: `/vm-service/businessType`
+  })
+}
+/**
+ * 获取商圈下销量前10的商品(补货推荐)
+ * @param {*} businessId
+ * @returns
+ */
+export function businessTop10API(businessId) {
+  return request({
+    url: `/vm-service/sku/businessTop10/${businessId}`
+  })
+}
