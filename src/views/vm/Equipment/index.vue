@@ -22,7 +22,7 @@
         <el-table-column label="设备状态" prop="vmStatus" />
         <el-table-column label="操作" width="200">
           <template slot-scope="{ row }">
-            <el-button size="small" type="text">货道</el-button>
+            <el-button size="small" type="text" @click="channel(row.innerCode)">货道</el-button>
             <el-button size="small" type="text" @click="stragety(row.innerCode)">策略</el-button>
             <el-button size="small" type="text" @click="modifyDevice(row)">修改</el-button>
           </template>
@@ -38,6 +38,8 @@
     <ModifyDeviceDialog ref="modifyDeviceRef" :dialog-visible.sync="modifyDeviceVisible" @refreshList="equipmentSearch" />
     <!-- 策略弹出层 -->
     <StrategyDialog ref="strategyRef" :dialog-visible.sync="StrategyVisible" @refreshList="equipmentSearch" />
+    <!-- 货道弹出层 -->
+    <ChanneDialog ref="channelRef" :dialog-visible.sync="channelVisible" @refreshList="equipmentSearch" />
   </div>
 </template>
 
@@ -48,9 +50,10 @@ import Pagination from '@/views/vm/cnps/Paginationw'
 import AddDeviceDialog from './cnps/AddDeviceDialog.vue'
 import ModifyDeviceDialog from './cnps/ModifyDeviceDialog.vue'
 import StrategyDialog from './cnps/StrategyDialog.vue'
+import ChanneDialog from './cnps/ChanneDialog.vue'
 export default {
   name: 'Equipments',
-  components: { Search, Pagination, AddDeviceDialog, ModifyDeviceDialog, StrategyDialog },
+  components: { Search, Pagination, AddDeviceDialog, ModifyDeviceDialog, StrategyDialog, ChanneDialog },
   data() {
     return {
       tableData: [],
@@ -60,7 +63,8 @@ export default {
       totalPage: 0,
       dialogVisible: false,
       modifyDeviceVisible: false,
-      StrategyVisible: false
+      StrategyVisible: false,
+      channelVisible: false
     }
   },
   created() {
@@ -124,6 +128,11 @@ export default {
       this.StrategyVisible = true
       this.$refs.strategyRef.innerCode = innerCode
       this.$refs.strategyRef.stragetys()
+    },
+    channel(innerCode) {
+      this.channelVisible = true
+      this.$refs.channelRef.innerCode = innerCode
+      this.$refs.channelRef.getChannelDetails()
     }
   }
 }

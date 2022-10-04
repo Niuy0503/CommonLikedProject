@@ -189,3 +189,13 @@ export function applicationStrategyAPI(innerCodeLists, policyId) {
     }
   })
 }
+/**
+ * 获取售货机货道详情
+ * @param {*} innerCode
+ * @returns
+ */
+export const channelDetailsAPI = (innerCode) => {
+  return request({
+    url: `/vm-service/channel/channelList/${innerCode}`,
+  })
+}
