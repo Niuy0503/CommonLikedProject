@@ -219,3 +219,19 @@ export function businessTop10API(businessId) {
     url: `/vm-service/sku/businessTop10/${businessId}`
   })
 }
+/**
+ * 商品搜索
+ * @param {*} pageIndex
+ * @param {*} pageSize
+ * @returns
+ */
+export function SearchSkuAPI(pageIndex, pageSize, skuName) {
+  return request({
+    url: '/vm-service/sku/search',
+    params: {
+      pageIndex,
+      pageSize,
+      skuName
+    }
+  })
+}

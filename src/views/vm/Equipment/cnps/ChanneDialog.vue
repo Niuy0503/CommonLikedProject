@@ -47,7 +47,8 @@
       <div class="top-dialog-wrapper">
         <div class="tips">该区域属于{{ businessArea }}商圈适合销售以下商品：</div>
         <el-row style="margin-left: -10px; margin-right: -10px;">
-          <el-col v-for="(item,index) in top10" :key="index" :span="4.8" style="padding-left: 10px; padding-right: 10px;">
+          <el-col v-for="(item,index) in top10" :key="index" :span="4.8"
+            style="padding-left: 10px; padding-right: 10px;">
             <div class="item">
               <div class=" sku space">
                 <img :src="item.image" alt="">
@@ -69,25 +70,30 @@
           <el-form-item label="商品名称：">
             <el-row type="flex" justify="space-between">
               <el-col :span="24">
-                <el-input placeholder="请输入" class="sku-name">
+                <el-input v-model="value" placeholder="请输入" class="sku-name" clearable>
                 </el-input>
               </el-col>
               <el-col :span="24">
-                <el-button type="primary" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="searchGoods">查询</el-button>
               </el-col>
             </el-row>
           </el-form-item>
         </el-form>
-        <el-row style="margin-left: -10px; margin-right: -10px;">
-          <el-col v-for="(item,index) in top10" :key="index" :span="4.8" style="padding-left: 10px; padding-right: 10px;">
-            <div class="item1">
-              <div class=" sku1 space1">
-                <img :src="item.image" alt="">
-                <div class="name">{{ item.skuName }}</div>
+        <el-scrollbar class="scrollbar">
+          <el-row style="margin-left: -10px; margin-right: -10px;">
+            <el-col v-for="(item,index) in skuList" :key="index" :span="4.8"
+              style="padding-left: 10px; padding-right: 10px;">
+              <div class="item1">
+                <div class=" sku1 space1">
+                  <img :src="item.skuImage" alt="">
+                  <div class="name">{{ item.skuName }}</div>
+                </div>
               </div>
-            </div>
-          </el-col>
-        </el-row>
+            </el-col>
+          </el-row>
+        </el-scrollbar>
+        <svg-icon icon-class="zuojiantou" class="arrow-left disabled" @click="left" />
+        <svg-icon icon-class="youjiantou" class="arrow-right" @click="right" />
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button class="confirm" type="primary" @click="close">确认</el-button>
@@ -97,7 +103,7 @@
 </template>
 
 <script>
-import { channelDetailsAPI, getBusinessListAPI, businessTop10API } from '@/api/equipment'
+import { channelDetailsAPI, getBusinessListAPI, businessTop10API, SearchSkuAPI } from '@/api/equipment'
 export default {
   name: 'ChannelDialog',
   props: {
@@ -120,7 +126,12 @@ export default {
         channel6: []
       },
       businessArea: '',
-      top10: []
+      top10: [],
+      skuList: [],
+      pageIndex: 1,
+      pageSize: 10,
+      totalPage: 0,
+      value: ''
     }
   },
   mounted() {
@@ -157,11 +168,34 @@ export default {
     close() {
       this.smartRankVisible = false
     },
-    addGoods() {
+    async addGoods() {
       this.addGoodsVisible = true
+      const { data } = await SearchSkuAPI()
+      this.skuList = data.currentPageRecords
+      this.totalPage = data.totalPage
     },
     closeGoods() {
       this.addGoodsVisible = false
+    },
+    async right() {
+      this.pageIndex++
+      if (this.pageIndex >= this.totalPage) {
+        this.pageIndex = this.totalPage
+      }
+      const { data } = await SearchSkuAPI(this.pageIndex, this.pageSize)
+      this.skuList = data.currentPageRecords
+    },
+    async left() {
+      this.pageIndex--
+      if (this.pageIndex < 0) {
+        this.pageIndex = 1
+      }
+      const { data } = await SearchSkuAPI(this.pageIndex, this.pageSize)
+      this.skuList = data.currentPageRecords
+    },
+    async searchGoods() {
+      const { data } = await SearchSkuAPI(null, this.pageSize, this.value)
+      this.skuList = data.currentPageRecords
     }
   }
 
@@ -200,6 +234,7 @@ export default {
         margin-right: 22px;
         display: inline-block;
       }
+
       .confirm {
         min-width: 80px;
         height: 36px;
@@ -304,6 +339,7 @@ export default {
       .dialog-footer {
         padding: 0;
         text-align: center;
+
         .el-button {
           display: inline-block;
         }
@@ -325,18 +361,23 @@ export default {
 
 .rankdialog-container {
   border-radius: 10px;
+
   .el-dialog__body {
     padding: 30px 20px;
+
     .top-dialog-wrapper {
       width: 750px;
       margin: 0 auto;
+
       .tips {
         margin-bottom: 16px;
       }
+
       .item {
         .space {
           margin-bottom: 20px;
         }
+
         .sku {
           width: 134px;
           height: 134px;
@@ -345,6 +386,7 @@ export default {
           box-shadow: 0 2px 4px 0 rgb(0 0 0 / 6%);
           border-radius: 4px;
           text-align: center;
+
           img {
             display: inline-block;
             width: 83px;
@@ -357,20 +399,24 @@ export default {
       }
     }
   }
+
   .el-dialog__footer {
     padding-top: 0;
     padding-bottom: 40px;
+
     .dialog-footer {
       padding-top: 0;
       text-align: center;
+
       .el-button {
         display: inline-block;
       }
+
       .accept {
-        width: 80px!important;
+        width: 80px !important;
         height: 36px;
         padding: 0;
-        background: linear-gradient(135deg,#ff9743,#ff5e20)!important;
+        background: linear-gradient(135deg, #ff9743, #ff5e20) !important;
         border: none;
       }
 
@@ -380,6 +426,7 @@ export default {
 
 .addGoodsdialog-container {
   border-radius: 10px;
+
   .el-dialog__header {
     .el-dialog__title {
       line-height: 22px;
@@ -388,17 +435,40 @@ export default {
       color: #333;
     }
   }
+
   .el-dialog__body {
     padding: 20px 20px 30px;
     color: #666;
+
     .select-sku-dialog-wrapper {
       position: relative;
       width: 750px;
       margin: 0 auto;
+
+      .svg-icon {
+        position: absolute;
+        top: 50%;
+        width: 50px !important;
+        height: 50px !important;
+      }
+      .disabled {
+        color: #d8dde3;
+      }
+
+      .svg-icon.arrow-left {
+        left: -45px;
+      }
+
+      .svg-icon.arrow-right {
+        right: -45px;
+      }
+
       .search {
         margin-bottom: 37px;
+
         .el-form-item {
           margin-bottom: 0;
+
           .el-form-item__label {
             line-height: 36px;
             text-align: right;
@@ -409,17 +479,20 @@ export default {
             padding: 0 12px 0 0;
             box-sizing: border-box;
           }
+
           .el-form-item__content {
             width: 396px;
             line-height: 36px;
             position: relative;
             font-size: 14px;
+
             .el-row {
               .el-col {
                 .sku-name {
                   margin-right: 16px;
                   width: 314px;
                 }
+
                 .el-input {
                   position: relative;
                   font-size: 14px;
@@ -430,12 +503,19 @@ export default {
           }
         }
       }
+
+      .scrollbar>div {
+        overflow-x: auto;
+      }
+
       .el-row {
         position: relative;
+
         .item1 {
           .space1 {
             margin-bottom: 20px;
           }
+
           .sku1 {
             width: 134px;
             height: 134px;
@@ -444,6 +524,7 @@ export default {
             box-shadow: 0 2px 4px 0 rgb(0 0 0 / 6%);
             border-radius: 4px;
             text-align: center;
+
             img {
               display: inline-block;
               width: 83px;
@@ -457,20 +538,24 @@ export default {
       }
     }
   }
+
   .el-dialog__footer {
     padding-top: 0;
     padding-bottom: 40px;
+
     .dialog-footer {
       padding-top: 0;
       text-align: center;
+
       .el-button {
         display: inline-block;
       }
+
       .confirm {
-        width: 80px!important;
+        width: 80px !important;
         height: 36px;
         padding: 0;
-        background: linear-gradient(135deg,#ff9743,#ff5e20)!important;
+        background: linear-gradient(135deg, #ff9743, #ff5e20) !important;
         border: none;
       }
     }
