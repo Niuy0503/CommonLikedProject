@@ -90,7 +90,7 @@ export default {
     handleClose() {
       this.$emit('update:dialog-visible', false)
       this.$refs.deviceDialogForm.resetFields()
-      this.formData = { }
+      this.deviceForm = { }
     },
     handleAvatarSuccess(res, file) {
       // console.log(file)
