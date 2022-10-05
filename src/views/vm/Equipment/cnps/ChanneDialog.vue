@@ -26,8 +26,8 @@
                   <div class="name">{{ (goods.sku && goods.sku.skuName) || "暂无商品" }}</div>
                 </div>
                 <div class="btns">
-                  <el-button type="text" class="add" @click="addGoods">添加</el-button>
-                  <el-button type="text" :class="['del',{forb:!goods.sku}]" :disabled="!goods.sku">删除</el-button>
+                  <el-button type="text" class="add" @click="addGoods(goods.channelCode)">添加</el-button>
+                  <el-button type="text" :class="['del',{forb:!goods.sku}]" :disabled="!goods.sku" @click="goods.sku=''">删除</el-button>
                 </div>
               </div>
             </el-col>
@@ -83,8 +83,9 @@
           <el-row style="margin-left: -10px; margin-right: -10px;">
             <el-col v-for="(item,index) in skuList" :key="index" :span="4.8"
               style="padding-left: 10px; padding-right: 10px;">
-              <div class="item1">
+              <div class="item1" @click="selectGoods(item,index)">
                 <div class=" sku1 space1">
+                  <img v-show="selectId===index" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAACQ0lEQVRYR83YP2gTURzA8e8vTSwUEXRQcFHXTiJ10EFcOrQIHQodCiZRCy46uIWmaKSJHRyETBWhSa2IEMGKuAiCRXHWxUGcHAQHhwZqaJLeT15IRNPk8ufe5XLju/fnc793v/fenSxk9FhVeagwCYwR4KVCSuJp3VSYCdBRG9pgHiflrsTSujMMkTEYAzMgDTI6jcg0DFZBCiWBCnCom4dsxtiO0BcnzNRIhTMqvOgEaoWxBhLhfTnEzMFddssR3qly1g3UDmMHJDyXCpd3xqmMfWUTuNQvxgYoe6rKrVRKnHhGV1W57gXjBeSIkMgn5b7pJJbRJEraK6YlSOClwk9gAQi1GKQswpV8Up6ae9G0xoCcgLQDub0zzW32pX0oxMXcomzFl3VahQ3gyD+NthFm15Py1pTFMzqpymsgYgPTbso+/f7F+cIDKcVX9KTuUQAmUH6MKNNrt+VzHXNalS23NaeXyLgujAJr+SW5ZipNZXX0aJElJ8yjjYR8N2XzaT0RET6iHLcVmc4rdYir64uSax5wfkUPH9jjg8K4bYxrlpltwHE496Q+RabyzayOFou8AS74gemY9grfSmEmCgnZRlVi93iGMucXpiOoVgFeUSWqYZaBG35iugK5LXaNe/1kU7t+PR8/bGI8R8g2xhPID0zfIL8wfYH8xPQM8hvTE2gQmK5Bg8J0BRokpiNo0Bj33b7+rd3N1mGzTsutI4jItD2gBYnZN2VBY/4DDQPmL2hYMDVQNKN3Gj+LbGZLv339Abi3VpXvOoUQAAAAAElFTkSuQmCC" alt="" class="selected">
                   <img :src="item.skuImage" alt="">
                   <div class="name">{{ item.skuName }}</div>
                 </div>
@@ -96,7 +97,7 @@
         <svg-icon icon-class="youjiantou" class="arrow-right" @click="right" />
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button class="confirm" type="primary" @click="close">确认</el-button>
+        <el-button :class="['confirm',{forbb:selectId===''}]" class="confirm" type="primary" :disabled="selectId===''" @click="closeGoods">确认</el-button>
       </div>
     </el-dialog>
   </div>
@@ -131,7 +132,13 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       totalPage: 0,
-      value: ''
+      value: '',
+      selectId: '',
+      sku: {
+        skuName: '',
+        skuImage: ''
+      },
+      channelCode: ''
     }
   },
   mounted() {
@@ -168,14 +175,25 @@ export default {
     close() {
       this.smartRankVisible = false
     },
-    async addGoods() {
+    async addGoods(channelCode) {
       this.addGoodsVisible = true
       const { data } = await SearchSkuAPI()
       this.skuList = data.currentPageRecords
       this.totalPage = data.totalPage
+      this.channelCode = channelCode
     },
     closeGoods() {
       this.addGoodsVisible = false
+      this.selectId = ''
+      Object.values(this.details).map(item => {
+        item.map(val => {
+          if (val.channelCode === this.channelCode) {
+            val.sku = this.sku
+          }
+          return val
+        })
+        return item
+      })
     },
     async right() {
       this.pageIndex++
@@ -196,6 +214,11 @@ export default {
     async searchGoods() {
       const { data } = await SearchSkuAPI(null, this.pageSize, this.value)
       this.skuList = data.currentPageRecords
+    },
+    selectGoods(item, index) {
+      this.selectId = index
+      this.sku.skuName = item.skuName
+      this.sku.skuImage = item.skuImage
     }
   }
 
@@ -512,6 +535,7 @@ export default {
         position: relative;
 
         .item1 {
+          position: relative;
           .space1 {
             margin-bottom: 20px;
           }
@@ -532,6 +556,13 @@ export default {
               margin-bottom: 5px;
               object-fit: contain;
               border-style: none;
+            }
+            .selected {
+              position: absolute;
+              width: 36px;
+              height: 36px;
+              top: 0;
+              left: 0;
             }
           }
         }
@@ -557,6 +588,10 @@ export default {
         padding: 0;
         background: linear-gradient(135deg, #ff9743, #ff5e20) !important;
         border: none;
+      }
+      .forbb {
+        background: linear-gradient(135deg, #ff9743, #ff5e20) !important;
+        opacity: 0.3;
       }
     }
   }
