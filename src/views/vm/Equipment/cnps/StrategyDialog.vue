@@ -56,7 +56,7 @@ export default {
       this.$emit('update:dialog-visible', false)
     },
     async stragetys() {
-      const res = await stragetyAPI(this.innerCode)
+      const res = await stragetyAPI(...this.innerCode)
       if (res.data) {
         this.isShow = false
         this.stragetyList = res.data

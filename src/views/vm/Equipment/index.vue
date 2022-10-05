@@ -7,12 +7,12 @@
         <el-button class="button" type="warning" icon="el-icon-circle-plus-outline" @click="addDevice">
           新建
         </el-button>
-        <el-button class="button2" type="info">
+        <el-button class="button2" type="info" @click="batchOperation">
           批量操作
         </el-button>
       </el-row>
       <!-- 表格 -->
-      <el-table :header-cell-style="{background:'#f3f6fb'}" tooltip-effect="dark" width="100%" :data="tableData">
+      <el-table :header-cell-style="{background:'#f3f6fb'}" tooltip-effect="dark" width="100%" :data="tableData" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column label="序号" width="120" type="index" :index="indexAdd" />
         <el-table-column label="设备编号" prop="innerCode" width="240px" />
@@ -29,7 +29,7 @@
         </el-table-column>
       </el-table>
       <!-- 分页器 -->
-      <Pagination :total-count="totalCount" :page-index="pageIndex" :total-page="totalPage" :table-data="tableData"
+      <Pagination v-show="totalPage>1" :total-count="totalCount" :page-index="pageIndex" :total-page="totalPage" :table-data="tableData"
         @prevPage="handlePrevPage" @nextPage="handleNextPage" />
     </el-card>
     <!-- 新建设备弹出层 -->
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { equipmentSearchAPI } from '@/api/equipment'
+import { equipmentSearchAPI, AllStrategyAPI } from '@/api/equipment'
 import Search from '@/views/vm/cnps/Searchw'
 import Pagination from '@/views/vm/cnps/Paginationw'
 import AddDeviceDialog from './cnps/AddDeviceDialog.vue'
@@ -64,7 +64,8 @@ export default {
       dialogVisible: false,
       modifyDeviceVisible: false,
       StrategyVisible: false,
-      channelVisible: false
+      channelVisible: false,
+      multipleSelection: []
     }
   },
   created() {
@@ -104,6 +105,8 @@ export default {
     },
     async search(innerCode) {
       const { data } = await equipmentSearchAPI(null, null, innerCode)
+      this.totalCount = data.totalCount
+      this.totalPage = data.totalPage
       this.tableData = data.currentPageRecords.map(item => {
         if (item.vmStatus === 0) {
           item.vmStatus = '未投放'
@@ -126,13 +129,32 @@ export default {
     },
     stragety(innerCode) {
       this.StrategyVisible = true
-      this.$refs.strategyRef.innerCode = innerCode
+      this.$refs.strategyRef.innerCode = [innerCode]
       this.$refs.strategyRef.stragetys()
     },
     channel(row) {
       this.channelVisible = true
       this.$refs.channelRef.currentPageRecord = row
       this.$refs.channelRef.getChannelDetails()
+    },
+    async batchOperation() {
+      if (this.multipleSelection.length === 0) {
+        return this.$message({
+          message: '请勾选售货机',
+          type: 'warning'
+        })
+      }
+      this.StrategyVisible = true
+      const { data } = await AllStrategyAPI()
+      this.$refs.strategyRef.AllStrategy = data
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+      const innerCodeList = []
+      this.multipleSelection.forEach(item => {
+        innerCodeList.push(item.innerCode)
+      })
+      this.$refs.strategyRef.innerCode = innerCodeList
     }
   }
 }
@@ -141,7 +163,6 @@ export default {
 <style lang="scss" scoped>
 .content {
   width: 100%;
-  height: 70vh;
   background-color: #fff;
 
   .row {

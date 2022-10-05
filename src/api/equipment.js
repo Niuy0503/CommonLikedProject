@@ -184,7 +184,7 @@ export function applicationStrategyAPI(innerCodeLists, policyId) {
     url: `/vm-service/vm/applyPolicy`,
     method: 'PUT',
     data: {
-      innerCodeList: [innerCodeLists],
+      innerCodeList: [...innerCodeLists],
       policyId
     }
   })
