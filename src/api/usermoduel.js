@@ -82,3 +82,8 @@ export function updataUserApi(id, data) {
     data
   })
 }
+export function getTaskReportInfoApi(start, end) {
+  return request({
+    url: `/task-service/task/taskReportInfo/${start}/${end}`
+  })
+}

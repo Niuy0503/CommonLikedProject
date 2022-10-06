@@ -57,3 +57,12 @@ export const getCurrentWeekFormat = function() {
     end
   }
 }
+export const getCurrentYearFormat = function() {
+  var now = new Date()
+  const end = dayjs(now).format('YYYY-MM-DD HH:mm:ss')
+  const start = dayjs(now).format('YYYY-01-01 00:00:00')
+  return {
+    start,
+    end
+  }
+}
