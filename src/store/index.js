@@ -5,6 +5,7 @@ import app from './modules/app'
 import settings from './modules/settings'
 import user from './modules/user'
 import dashboard from './modules/dashboard'
+import sku from './modules/sku'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     app,
     settings,
     user,
-    dashboard
+    dashboard,
+    sku
   },
   getters
 })

@@ -1,3 +1,5 @@
 export * from '@/api/login'
 export * from '@/api/user'
 export * from '@/api/home'
+export * from '@/api/sku'
+export * from '@/api/policy'
