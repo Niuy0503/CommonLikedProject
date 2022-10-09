@@ -21,7 +21,6 @@ export const getCurrentMonthFormat = function() {
   first = dayjs(first).format('YYYY-MM-DD')
   var dateNow = new Date()
   dateNow = dayjs(dateNow).format('YYYY-MM-DD')
-  console.log(first, dateNow)
   return {
     start: first,
     end: dateNow

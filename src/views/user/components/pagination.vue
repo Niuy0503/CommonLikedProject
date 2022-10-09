@@ -5,8 +5,8 @@
     <span>共 {{ totalCount }} 条记录 第 {{ pageIndex }} /
       {{ totalPage }} 页</span>
     <div>
-      <el-button type="info" :disabled="pageIndex === '1'" size="small" @click="changePage('prev')">上一页</el-button>
-      <el-button type="info" :disabled="pageIndex ===totalPage" size="small" @click="changePage('next')">下一页</el-button>
+      <el-button type="info" :disabled="pageIndex == '1'" size="small" @click="changePage('prev')">上一页</el-button>
+      <el-button type="info" :disabled="pageIndex ==totalPage" size="small" @click="changePage('next')">下一页</el-button>
     </div>
   </div>
 </template>

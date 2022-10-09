@@ -25,7 +25,7 @@
         <el-form-item ref="mobile" label="联系电话：" prop="mobile">
           <el-input v-model="userInfo.mobile" placeholder="请输入" maxlength="11" show-word-limit />
         </el-form-item>
-        <el-form-item ref="region" label="负责区域：" prop="region">
+        <el-form-item ref="region" label="负责区域：" prop="regionId">
           <el-select v-model="region" placeholder="请选择" value-key="id" @change="pushObj">
             <el-option v-for="item in regionList" :key="item.id" :label="item.name" :value="item" />
           </el-select>
@@ -183,13 +183,19 @@ export default {
         await this.$refs.userDialogForm.validate()
         this.id ? await updataUserApi(this.id, this.userInfo) : await addUserApi(this.userInfo)
         this.$refs.userDialogForm.resetFields()
-        this.userInfo.image = ''
+        this.userInfo = {
+          userName: '',
+          roleId: '',
+          mobile: '',
+          regionId: '',
+          regionName: '',
+          status: '',
+          image: ''
+        }
         this.region = {
           id: '',
           name: ''
         }
-        this.userInfo.regionName = ''
-        this.userInfo.regionId = ''
         this.imageUrl = ''
         this.dialogVisible = false
         await this.getUserInfo()
@@ -296,7 +302,7 @@ export default {
     text-align: center;
     color: #bac0cd;
   }
-  ::v-deep .el-upload{
+  ::v-d eep .el-upload{
     background: #f3f6fb;
   }
   .el-upload__tip{
