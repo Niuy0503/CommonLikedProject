@@ -74,7 +74,7 @@
       <pagination :total-count="totalCount" :page-index="page.pageIndex" :total-page="totalPage" @prevPage="pagechange" />
     </div>
     <add-policy ref="addPolicy" :dialog-visible.sync="dialogVisible" @refreshList="getPolicyList" />
-    <policy-detail ref="currentPolicy" v-loading="loading" :page-date="pageDate" :dialog-show.sync="dialogShow" @checkDetails="changeDetails" />
+    <policy-detail ref="currentPolicy" :page-date="pageDate" :dialog-show.sync="dialogShow" @checkDetails="changeDetails" />
   </div>
 </template>
 

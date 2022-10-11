@@ -68,7 +68,10 @@ export default {
     handerClose() {
       this.$emit('update:dialogVisible', false)
       this.$refs.roleDialogForm.resetFields() // 重置表单
-      this.formData = {}
+      this.formData = {
+        policyName: '',
+        discount: ''
+      }
     },
     // 添加策略
     async addPolicy() {
