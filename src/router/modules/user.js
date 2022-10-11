@@ -8,7 +8,6 @@ export default {
   children: [
     {
       path: 'index',
-      name: 'Index',
       component: () => import('@/views/user/index'),
       meta: { title: '人员列表' }
     },

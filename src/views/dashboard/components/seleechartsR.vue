@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="true" ref="SalesdDistribution" class="SalesdDistribution">销售数据柱状图</div>
+    <div v-if="Collect.xAxis.length!==0" ref="SalesdDistribution" class="SalesdDistribution">销售数据柱状图</div>
     <Nodata v-else />
   </div>
 </template>
@@ -39,7 +39,7 @@ export default {
   methods: {
     getSaleDataEchars() {
       var chartDom = this.$refs.SalesdDistribution
-      var myChart = echarts.init(chartDom)
+      var myChart = chartDom && echarts.init(chartDom)
       var option
       option = {
         title: {
@@ -56,7 +56,7 @@ export default {
         grid: {
           left: '16%',
           bottom: '10%',
-          right: '5%'
+          right: '3%'
         },
         xAxis: {
           type: 'category',
@@ -92,7 +92,7 @@ export default {
         ]
       }
       // console.log(option)
-      option && myChart.setOption(option)
+      option && myChart && myChart.setOption(option)
     },
     async getRegionCollect() {
       if (this.checked === 3) {

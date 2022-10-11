@@ -16,7 +16,6 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   if (store.getters.token) {
     if (IscheckTimeOut()) {
-      console.log(1)
       store.dispatch('user/logout')
       router.push('/login')
       return Promise.reject(new Error('token超时'))
@@ -39,7 +38,7 @@ service.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       store.dispatch('user/logout')
       router.push('/login')
-      Message.error('token超时')
+      // Message.error('token超时')
     } else {
       Message.error(error.message)
     }

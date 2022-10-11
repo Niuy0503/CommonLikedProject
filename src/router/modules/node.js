@@ -14,7 +14,6 @@ export default {
     },
     {
       path: 'node',
-      name: 'Node',
       component: () => import('@/views/levelmanage/index'),
       meta: { title: '点位管理' }
     },

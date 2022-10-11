@@ -141,15 +141,15 @@ export default {
       }
     }
   },
-  created() {
-    this.$store.dispatch('dashboard/getCurrentMonth')
-    this.getAllTaskStatus()
-    this.getOrderCount()
-  },
   computed: {
     ...mapGetters([
       'name'
     ])
+  },
+  created() {
+    this.$store.dispatch('dashboard/getCurrentMonth')
+    this.getAllTaskStatus()
+    this.getOrderCount()
   },
   methods: {
     async getAllTaskStatus() {

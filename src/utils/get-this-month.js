@@ -28,11 +28,38 @@ export const getCurrentMonthFormat = function() {
 }
 export const getCurrentWeek = function() {
   var now = new Date()
-  const nowWeek = now.getDay()
+  var nowWeek = now.getDay()
+  if (nowWeek === 0) {
+    nowWeek = 8
+  }
   var num = +new Date() - 1000 * 60 * 60 * 24 * (nowWeek - 1)
   const startTime = new Date(num)
   const end = dayjs(now).format('YYYY-MM-DD')
   const start = dayjs(startTime).format('YYYY-MM-DD')
+  return {
+    start,
+    end
+  }
+}
+export const getCurrentWeekFormat = function() {
+  var now = new Date()
+  var nowWeek = now.getDay()
+  if (nowWeek === 0) {
+    nowWeek = 8
+  }
+  var num = +new Date() - 1000 * 60 * 60 * 24 * (nowWeek - 1)
+  const startTime = new Date(num)
+  const end = dayjs(now).format('YYYY-MM-DD HH:mm:ss')
+  const start = dayjs(startTime).format('YYYY-MM-DD 00:00:00')
+  return {
+    start,
+    end
+  }
+}
+export const getCurrentYearFormat = function() {
+  var now = new Date()
+  const end = dayjs(now).format('YYYY-MM-DD HH:mm:ss')
+  const start = dayjs(now).format('YYYY-01-01 00:00:00')
   return {
     start,
     end

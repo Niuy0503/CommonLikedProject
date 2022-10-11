@@ -131,6 +131,7 @@ export default {
           date = getCurrentMonthFormat()
         }
       }
+      console.log(date)
       var { data } = await getAmountCollect(type, date)
       this.echartsDate.xAxis = data.xAxis.map((res) => {
         if (this.checked === 1) {
