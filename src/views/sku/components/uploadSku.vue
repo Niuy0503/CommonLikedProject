@@ -17,7 +17,7 @@
         <template>
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             :before-remove="beforeRemove"
             multiple
             :limit="1"
@@ -96,6 +96,7 @@ export default {
         if (this.data) {
           this.loading = true
           const res = await uploadSku(this.data)
+          this.$message.success('文件上传成功')
           console.log(res)
         }
       } finally {
@@ -134,5 +135,6 @@ export default {
 }
 ::v-deep .el-form-item {
     margin-bottom: 0px;
+    margin-left:70px;
 }
 </style>
